@@ -1,4 +1,6 @@
 0.1.0
+- Replace single-router audit notes with generic public documentation and Chinese guidance.
+- Remove private deployment diagnostics and historical router fixtures from the source tree.
 - Bundle the software-center icon as a 256x256 AdGuard Home shield PNG.
 - Phase 0 package skeleton only.
 - Bypass mode: 127.0.0.1:6053 -> 127.0.0.1:7913.

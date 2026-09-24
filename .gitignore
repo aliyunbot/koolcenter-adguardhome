@@ -1,6 +1,11 @@
 .pytest_cache/
 __pycache__/
 *.py[cod]
+.secrets/
+router_backups/
+*.cookie
+*.cookies
+*.key
 package/.upstream-probe-fixture/
 package/.upstream-proc-fixture/
 package/dist/*

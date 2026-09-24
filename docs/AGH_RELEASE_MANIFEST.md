@@ -1,60 +1,51 @@
-# AdGuard Home External Release Manifest
+# AdGuard Home Release Manifest Template
 
-Status: pre-change, read-only audit complete. This manifest does not authorize router installation or execution.
+## English
 
-## Pinned artifact
-
-- Project: AdGuard Home
-- Version: `v0.107.79`
-- Release page: `https://github.com/AdguardTeam/AdGuardHome/releases/tag/v0.107.79`
-- Asset: `AdGuardHome_linux_arm64.tar.gz`
-- Archive SHA256: `3f7893c18e8aaadc456d0452839190561c306ca95175a2254958be80a769c1ae`
-- Inner ELF SHA256: `64a9b6fc6269247f1973cddbf285aa6ce866d11bd29546b0f4135ba31d2283c8`
-- ELF: 64-bit LSB, ARM AArch64, statically linked, stripped
-- License: GPL-3.0-only; release archive includes `LICENSE.txt`
-
-The archive was downloaded and verified locally. It is intentionally not inside the KoolCenter package tarball and has not been copied to the router.
-
-## Live platform evidence
-
-- `uname -m`: `aarch64`
-- `uname -r`: `4.19.294`
-- External prefix: `/tmp/mnt/sdb1/entware`
-- Candidate binary: `/tmp/mnt/sdb1/entware/adguardhome/bin/AdGuardHome`
-- Candidate config: `/tmp/mnt/sdb1/entware/adguardhome/conf/AdGuardHome.yaml`
-- Candidate work directory: `/tmp/mnt/sdb1/entware/adguardhome/data`
-- Candidate pidfile: `/tmp/mnt/sdb1/entware/adguardhome/data/AdGuardHome.pid`
-- Filesystem: `/dev/sdb1`, `ext3`, `rw,nodev`, no observed `noexec`
-- Free space observed: `5968148 KiB`
-
-## Required pre-exec gates
-
-All gates must pass in this order:
-
-1. Verify the downloaded archive SHA256 against the pinned value above.
-2. Verify the extracted file is an AArch64 ELF and its inner hash matches the pinned value.
-3. Generate a schema-34-compatible AdGuard Home YAML; the current schema-0 stub is not executable configuration.
-4. Verify the external prefix is mounted and writable without `noexec`.
-5. Verify the current router backup and rollback manifest are present.
-6. Verify SmartDNS has an exact `127.0.0.1:7913` listener owned by `smartdns`.
-7. Keep AdGuard Home on `127.0.0.1:6053`; never bind port 53.
-8. Run local/package dry-run and config validation before any router execution.
-
-Failure of any gate is fail-closed. No dnsmasq hook, full-network DNS switch, or AGH start is allowed after a failed gate.
-
-## First intended invocation
-
-After explicit approval and after all gates pass, the intended binary invocation is equivalent to:
+This file is a template for a future, explicitly approved external release.
+It must be filled from the official AdGuard Home release page and must not
+contain router addresses, local backup paths, cookies, credentials, or private
+deployment evidence.
 
 ```text
-AdGuardHome --work-dir /tmp/mnt/sdb1/entware/adguardhome/data --config /tmp/mnt/sdb1/entware/adguardhome/conf/AdGuardHome.yaml --pidfile /tmp/mnt/sdb1/entware/adguardhome/data/AdGuardHome.pid --no-check-update --check-config
+version: <official-version>
+release_url: <official-release-url>
+asset: <official-asset-name>
+archive_sha256: <official-archive-sha256>
+inner_file: AdGuardHome
+inner_sha256: <verified-inner-sha256>
+architecture: <observed-runtime-architecture>
+license: GPL-3.0-only
+storage_contract: <approved-persistent-data-path>
+dns_listener: 127.0.0.1:6053
+upstream_contract: 127.0.0.1:7913
+port53_bind: forbidden
 ```
 
-Do not use `--service install`, `--service start`, `--update`, or deprecated host/port flags. KoolCenter lifecycle remains responsible for the `init.d` link and start/stop state.
+Required evidence is release-scoped and deployment-agnostic: official URL,
+matching checksum, ELF inspection, schema-compatible configuration, storage
+capability, and an exact read-only upstream health result. A manifest is not
+authorization to install or execute anything.
 
-## Current blockers
+## 中文对照
 
-- SmartDNS is configured as `[::]:7913`; exact IPv4 loopback ownership is not verified.
-- A schema-34 candidate YAML is now generated from the official v0.107.79 v34 migration shape; ARM-side `--check-config` remains pending.
-- The official binary remains external and uninstalled by design.
-- Full package runtime evidence display is still being wired; `core_integration=pending` remains the only acceptable pre-verification state.
+本文件是未来经明确批准的外部版本发布模板。内容必须来自 AdGuard Home 官方
+release 页面，不得写入路由器地址、本地备份路径、cookie、凭据或私有部署证据。
+
+```text
+version: <官方版本>
+release_url: <官方发布地址>
+asset: <官方资源名>
+archive_sha256: <官方归档校验和>
+inner_file: AdGuardHome
+inner_sha256: <已验证的内部文件校验和>
+architecture: <已观察到的运行时架构>
+license: GPL-3.0-only
+storage_contract: <批准的持久化数据路径>
+dns_listener: 127.0.0.1:6053
+upstream_contract: 127.0.0.1:7913
+port53_bind: forbidden
+```
+
+必须提供官方地址、匹配校验和、ELF 检查、兼容配置、存储能力和精确的只读上游
+健康结果。manifest 本身不代表已经获得安装或执行授权。

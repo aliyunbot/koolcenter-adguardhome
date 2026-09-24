@@ -4,7 +4,7 @@ Phase 0 only. This package is a fail-closed adapter skeleton. It does not instal
 
 ## What was confirmed
 
-Public rogsoft/KoolCenter contract, read 2026-09-23 from master:
+Public rogsoft/KoolCenter contract, read from the upstream master branch:
 
 - Repository: https://github.com/koolshare/rogsoft
 - README: https://github.com/koolshare/rogsoft/blob/master/README.md
@@ -111,7 +111,7 @@ Commands, under a safe prefix:
 - `.valid` contains only `hnd`, matching the rogsoft reference plugins. mtk, ipq32, ipq64, and qca KoolCenter models need their own token and were not claimed.
 - Official AGH userspace ABI is not verified here. rogsoft README says hnd userspace is mostly 32-bit even on armv8 kernels. No binary was downloaded.
 - No fancyss-approved dnsmasq lifecycle API was verified in this pass. The hook script refuses rather than inventing a `server=` write.
-- Upstream 127.0.0.1:7913 is the Phase 0 auto contract from SPEC, not a live probe. docs/FANCYSS_LIFECYCLE.md says the 2026-09-23 router backup never recorded 7913, so this skeleton does not probe or rewrite router DNS. explicit endpoints are stored and passed only; they are not applied.
+- Upstream 127.0.0.1:7913 is the Phase 0 auto contract from SPEC, not a live fact. The package does not claim that a deployment has this listener until the read-only probe verifies it. Explicit endpoints are stored and passed only; they are not applied.
 - Upstream verification display is package-local. `unknown` and `candidate` are `not_verified`. Core listener/safety verification is not wired (`core_integration=pending`).
 - rogsoft nat-start dispatches init.d/N*. This skeleton links S98adguardhome.sh only and does not install an N* hook, so Phase 0 does not join nat or DNS hijack.
 - fancyss is not a rogsoft plugin. Its DNS lifecycle is audited separately in docs/FANCYSS_LIFECYCLE.md.
@@ -121,7 +121,7 @@ Commands, under a safe prefix:
 
 ## License
 
-- rogsoft has no GitHub-detected license (`GET /repos/koolshare/rogsoft/license` returned 404 on 2026-09-23). Center scripts carry a kooldev copyright header. No rogsoft code, ASP, or CSS was copied. The package icon is an attributed shield crop based on official AdGuard Home artwork; see `docs/BRANDING.md`.
+- rogsoft has no GitHub-detected license. Center scripts carry a kooldev copyright header. No rogsoft code, ASP, or CSS was copied. The package icon is an attributed shield crop based on official AdGuard Home artwork; see `docs/BRANDING.md`.
 - AdGuard Home is GPL-3.0-only: https://github.com/AdguardTeam/AdGuardHome/blob/master/LICENSE.txt
 - Official releases: https://github.com/AdguardTeam/AdGuardHome/releases
 - This skeleton does not convey the AGH binary. A future package that ships the binary must keep GPL-3.0 obligations, checksum the official artifact, and must not rewrite AGH.
@@ -130,3 +130,16 @@ Commands, under a safe prefix:
 ## Check
 
 `shellcheck` is not installed on this host. Verification is `sh -n` plus `package/self-check.sh`.
+
+## 中文对照
+
+这是一个 Phase 0 的 fail-closed KoolCenter 软件中心适配器骨架：不绑定 53 端口，
+不执行真实路由器安装，不捆绑 AdGuard Home 二进制。`DRY_RUN=1` 只打印计划；真实写入
+必须使用安全的测试前缀，根目录和系统路径会被拒绝。
+
+软件包层只负责传递配置和显示状态，可移植核心位于 `src/agh_core.py`。默认上游
+`127.0.0.1:7913` 是接口约定，不是任何部署已经存在的事实；只有只读探针确认后才可以
+进入后续核心验证。显式上游只作为未验证候选保存，不会修改路由器、dnsmasq 或 DNS 规则。
+
+软件中心布局、生命周期脚本、存储路径、`.valid` 平台标记和构建行为均以当前文件为准；
+许可证、官方 AdGuard Home 复用边界和发布闸门见 `REUSE_INVENTORY.md` 以及 `docs/`。

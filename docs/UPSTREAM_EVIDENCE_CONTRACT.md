@@ -31,3 +31,16 @@ Hermetic tests may set `PROBE_FIXTURE_FILE` to an `ss`-style listener table; `PR
 ## Core Handoff
 
 The package output is evidence, not the core verification record. A future integration may pass only `state=verified` with `source=listener_owner` into the core's `DNSUpstreamContract`, preserving the observed endpoint and evidence source, and then rely on `src/agh_core.py` for its own contract validation. Non-verified states must remain non-verified. The current package does **not** automatically write `source=core` or claim core verification. The package UI continues to show verification as pending/not verified until an explicit core integration exists.
+
+## 中文对照
+
+`package/adguardhome/scripts/upstream-probe.sh` 是软件包层的只读探针，只检查固定的
+`127.0.0.1:7913`。它读取 `ss`、`netstat` 或受控的 `/proc` 监听证据，不连接 DNS，
+不读取或修改路由器配置、dbus、dnsmasq、文件或数据库，也不接受任意端点参数。
+
+只有在监听地址精确匹配且进程归属明确为 `smartdns` 时，状态才是 `verified`；配置默认值、
+历史报告、截图或进程名缺失都不能升级为已验证。`unknown`、`candidate` 和 `failed` 必须
+继续保持未验证，不能自动写入核心验证记录。
+
+测试可以使用合成 listener fixture，但这些 fixture 只用于本地确定性测试，不能当作生产路由器
+证据。未来核心集成只能接收 `verified` 且来源为 `listener_owner` 的结果。

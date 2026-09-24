@@ -1,6 +1,6 @@
 # Reuse Inventory
 
-Status: initial inventory, 2026-09-23. This file is a decision record, not an
+Status: public reuse inventory. This file is a decision record, not an
 automatic approval to copy third-party code.
 
 ## Use directly or as a dependency
@@ -76,10 +76,11 @@ automatic approval to copy third-party code.
 
 ## Deliberately not reused as router runtime code
 
-- Local `router-fancyss-backup` skill: use it operationally before authorized
-  router changes; do not ship it inside the router plugin.
-- Existing router backups and reports: evidence and regression fixtures only;
-  never package credentials, cookies, or private settings.
+- Private deployment tools and operational backup workflows: keep them outside
+  this product repository and never ship them inside the router plugin.
+- Deployment backups and reports: if used during private work, convert only
+  their conclusions into synthetic tests; never package credentials, cookies,
+  addresses, or private settings.
 - Any binary fetched from an unverified mirror: reject; use upstream release
   checksums or a platform package.
 
@@ -89,3 +90,14 @@ Do not implement a new AGH installer, AGH binary wrapper, generic OpenWrt
 service manager, GL.iNet UI, Merlin installer, pfSense package, or OPNsense
 package. The first new code should be the KoolCenter/fancyss adapter and its
 portable DNS-chain reconciliation and failure-recovery tests.
+
+## 中文说明
+
+本清单记录可复用组件、许可证边界和适配决策，不代表自动获得复制第三方代码的许可。
+优先直接依赖官方 AdGuard Home、OpenWrt 软件包和 SmartDNS；只有在确认存在真实
+KoolCenter/fancyss 集成缺口时才编写薄适配器。Merlin、GL.iNet、pfSense、OPNsense
+等项目只作为边界参考，不重复实现其成熟安装路径。
+
+私有部署工具、运维备份、路由器报告和真实配置不属于产品仓库。若需要把部署经验转成
+测试，只能使用不含真实地址、主机名、cookie、凭据和订阅信息的合成 fixture，并在文档中
+明确标注为非生产示例。
