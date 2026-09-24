@@ -8,9 +8,12 @@
 当前版本为 **Phase 0 预览版**：
 
 - 仅支持 KoolCenter 原生软件中心的手动/离线安装；
-- 当前只声明 `hnd` 平台标记，其他平台族暂不声明支持；
+- 当前使用 KoolCenter 1.5 软件中心契约，公开参考范围为 `hnd`、`axhnd`、
+  `axhnd.675x`、`p1axhnd.675x`；旧版 `arm380`/`arm384`、`mtk`、`ipq32`、
+  `ipq64`、`qca` 暂不声明支持；
 - 需要可写的持久化 Entware 根目录；
-- 需要用户提前准备经过版本、架构和 SHA256 校验的 AdGuard Home 二进制；
+- 需要用户提前准备官方 `v0.107.79`、`linux-armv7`、经过 SHA256 校验的
+  AdGuard Home 二进制；
 - 软件包本身不捆绑 AdGuard Home 二进制；
 - 不执行局域网 DNS 自动切换；
 - AdGuard Home 不监听 53 端口。
@@ -20,13 +23,14 @@
 安装前确认：
 
 1. 路由器已经安装 KoolCenter 软件中心；
-2. 路由器属于当前声明支持的平台，当前版本仅声明 `hnd`；
+2. 路由器属于当前公开支持范围，详见 [支持矩阵](SUPPORT_MATRIX.md)；
 3. 路由器存在可写的持久化 Entware 存储；
 4. AdGuard Home 二进制已经准备好，并放置在：
 
    `entware/adguardhome/bin/AdGuardHome`
 
-二进制必须匹配 GitHub Release 中的版本、目标架构和 SHA256 校验值。当前预览包
+二进制必须匹配 [发布清单](AGH_RELEASE_MANIFEST.md) 中的版本、目标架构和 SHA256
+校验值。当前预览包
 不支持直接通过在线软件中心目录安装。
 
 ## 安装流程
@@ -73,6 +77,7 @@
 - [fancyss 生命周期契约](FANCYSS_LIFECYCLE.md)
 - [二进制打包策略](AGH_BINARY_PACKAGING.md)
 - [发布清单](AGH_RELEASE_MANIFEST.md)
+- [公开支持矩阵](SUPPORT_MATRIX.md)
 - [复用清单](../REUSE_INVENTORY.md)
 - [品牌说明](BRANDING.md)
 

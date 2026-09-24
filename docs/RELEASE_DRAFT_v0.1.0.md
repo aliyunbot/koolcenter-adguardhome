@@ -9,13 +9,15 @@ Initial Phase 0 preview of the KoolCenter AdGuard Home adapter.
 ### Requirements
 
 - Native KoolCenter Software Center
-- A currently claimed `hnd` platform
+- A claimed KoolCenter 1.5 platform family; see the
+  [public support matrix](SUPPORT_MATRIX.md)
 - Writable persistent Entware storage
-- A verified external AdGuard Home binary at
+- A verified external AdGuard Home `v0.107.79` `linux-armv7` binary at
   `entware/adguardhome/bin/AdGuardHome`
 
-The binary is not included in this package. It must match the release
-manifest, target architecture, and published SHA256 checksum.
+The binary is not included in this package. It must match the
+[release manifest](AGH_RELEASE_MANIFEST.md), target architecture, and published
+SHA256 checksums.
 
 ### Installation
 
@@ -48,13 +50,13 @@ KoolCenter AdGuard Home 适配器的首个 Phase 0 预览版。
 ### 安装条件
 
 - 原生 KoolCenter 软件中心；
-- 当前声明支持的 `hnd` 平台；
+- 当前公开支持范围见[支持矩阵](SUPPORT_MATRIX.md)；
 - 可写的持久化 Entware 存储；
-- 已校验的外部 AdGuard Home 二进制，路径为
+- 已校验的外部 AdGuard Home `v0.107.79` `linux-armv7` 二进制，路径为
   `entware/adguardhome/bin/AdGuardHome`。
 
-本软件包不包含 AdGuard Home 二进制。二进制必须匹配发布清单、目标架构和公开
-SHA256 校验值。
+本软件包不包含 AdGuard Home 二进制。二进制必须匹配[发布清单](AGH_RELEASE_MANIFEST.md)、
+目标架构和公开 SHA256 校验值。
 
 ### 安装流程
 

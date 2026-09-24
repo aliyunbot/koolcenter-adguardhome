@@ -8,15 +8,15 @@ KoolCenter/fancyss routers.
 Before installation, confirm that:
 
 - The router has the native KoolCenter Software Center.
-- The router uses a currently claimed platform family. This release claims
-  the `hnd` platform token only; `mtk`, `ipq32`, `ipq64`, and `qca` are not
-  claimed.
+- The router uses a claimed KoolCenter 1.5 platform family. Public reference
+  scope is `hnd`/`axhnd`/`axhnd.675x`/`p1axhnd.675x`; legacy `arm380`/`arm384`,
+  `mtk`, `ipq32`, `ipq64`, and `qca` are not claimed.
 - A writable Entware root is available on persistent storage.
-- A verified AdGuard Home binary is already prepared at:
+- A verified AdGuard Home `v0.107.79` `linux-armv7` binary is already prepared at:
   `entware/adguardhome/bin/AdGuardHome`.
 
 The AdGuard Home binary is not included in this package. It must match the
-release manifest, target architecture, and published SHA256 checksum.
+[release manifest](docs/AGH_RELEASE_MANIFEST.md) and published SHA256 checksums.
 
 This Phase 0 preview is for manual/offline installation through the native
 KoolCenter Software Center. Online catalog installation is not supported.
@@ -70,6 +70,7 @@ an explicit data purge is requested.
 - [fancyss lifecycle contract](docs/FANCYSS_LIFECYCLE.md)
 - [Binary packaging policy](docs/AGH_BINARY_PACKAGING.md)
 - [Release manifest](docs/AGH_RELEASE_MANIFEST.md)
+- [Public support matrix](docs/SUPPORT_MATRIX.md)
 - [Branding and attribution](docs/BRANDING.md)
 
 The repository contains product code, generic documentation, and synthetic
