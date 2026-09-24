@@ -48,14 +48,16 @@ and OPNsense. Add code only for a verified KoolCenter/fancyss integration gap.
 ### Phase 0 contract
 
 1. Package and UI are fail-closed and safe to run under a test prefix.
-2. AdGuard Home listens only on the package listener, never on port 53.
-3. The default upstream is the proxy-aware listener; no external fallback is
+2. A live package install is accepted only from the native KoolCenter software-center
+   environment with a writable Entware root; ordinary host execution remains refused.
+3. AdGuard Home listens only on the package listener, never on port 53.
+4. The default upstream is the proxy-aware listener; no external fallback is
    added implicitly.
-4. No dnsmasq, ACL, firewall, or proxy-plan change is made by the preview
+5. No dnsmasq, ACL, firewall, or proxy-plan change is made by the preview
    adapter.
-5. Listener ownership and upstream health remain unverified until read-only
+6. Listener ownership and upstream health remain unverified until read-only
    evidence proves them.
-6. A failed health check cannot result in a LAN-wide DNS black hole.
+7. A failed health check cannot result in a LAN-wide DNS black hole.
 
 ### Regression requirements
 
@@ -80,7 +82,7 @@ and OPNsense. Add code only for a verified KoolCenter/fancyss integration gap.
 - A universal installer for unrelated router ecosystems.
 - A bundled AdGuard Home binary before release, ABI, checksum, and license
   gates are complete.
-- Live router installation or DNS cutover from the Phase 0 preview package.
+- Live DNS cutover from the Phase 0 preview package.
 - Binding AdGuard Home to port 53.
 
 ## 中文对照
@@ -146,5 +148,5 @@ KoolCenter 是第一目标平台，不是永久的可移植边界。新增平台
 
 - 为无关路由器生态构建通用安装器。
 - 在版本、ABI、校验和及许可证闸门完成前捆绑 AdGuard Home 二进制。
-- 从 Phase 0 预览包执行真实路由器安装或 DNS 切换。
+- 从 Phase 0 预览包执行 DNS 切换；真实安装仅限受环境闸门保护的 KoolCenter 软件中心路径。
 - 让 AdGuard Home 监听 53 端口。

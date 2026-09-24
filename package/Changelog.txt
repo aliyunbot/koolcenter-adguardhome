@@ -1,4 +1,5 @@
 0.1.0
+- Remove the archived yHosts / ChinaList preset from the subscription catalog.
 - Add the 217heidai AdGuard Home rule 1 subscription as an optional preset.
 - Replace single-router audit notes with generic public documentation and Chinese guidance.
 - Remove private deployment diagnostics and historical router fixtures from the source tree.
@@ -6,7 +7,7 @@
 - Phase 0 package skeleton only.
 - Bypass mode: 127.0.0.1:6053 -> 127.0.0.1:7913.
 - Does not bind port 53, does not install a dnsmasq hook, does not bundle AdGuard Home.
-- Live router install is fail-closed.
+- Live install is accepted only inside the native KoolCenter software-center environment with a writable Entware root.
 - Upstream mode defaults to auto. explicit host/port is stored as dbus-style keys only.
 - Local explicit ports 53 and 6053 are refused. Switching back to auto clears manual verified and returns to pending.
 - Package scripts do not modify dnsmasq or the router. core integration is pending.

@@ -5,8 +5,10 @@ AdGuard Home into an existing proxy-aware DNS chain. It is not a Merlin
 installer port, a universal router installer, or a replacement for AdGuard
 Home. AdGuard Home must not bind port 53.
 
-**Status:** Phase 0 preview. The package is safe to test under a prefix, does
-not perform a live DNS cutover, and does not bundle the AdGuard Home binary.
+**Status:** Phase 0 preview. The package is safe to test under a prefix and can
+be installed by KoolCenter when its native environment and writable Entware
+root are detected. It does not perform a live DNS cutover and does not bundle
+the AdGuard Home binary.
 
 ## Documentation
 
@@ -28,8 +30,9 @@ single-device audit evidence are deliberately excluded.
 KoolCenter/fancyss 适配器。它不是 Merlin 安装器，不是覆盖所有路由器的通用安装器，
 也不是 AdGuard Home 的替代品。AdGuard Home 不能监听 53 端口。
 
-**当前状态：** Phase 0 预览版。软件包可在指定测试前缀下安全验证，不执行真实 DNS 切换，
-也不捆绑 AdGuard Home 二进制。
+**当前状态：** Phase 0 预览版。软件包可在指定测试前缀下安全验证，也可由 KoolCenter
+在检测到原生环境和可写 Entware 根目录后安装；不执行真实 DNS 切换，也不捆绑
+AdGuard Home 二进制。
 
 项目只包含产品代码、通用文档和合成测试；路由器地址、主机名、备份、cookie、凭据及
 单设备审计证据均不会进入仓库。

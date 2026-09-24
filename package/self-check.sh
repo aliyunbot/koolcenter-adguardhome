@@ -22,6 +22,9 @@ grep -q "53|6053" "$BASE/adguardhome/scripts/lib_prefix.sh" || fail "loop port c
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "agh-add-preset"
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt"
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "217heidai/adblockfilters/main/rules/adblockdns.txt"
+if grep -q "raw.githubusercontent.com/VeleSila/yhosts/master/hosts.txt" "$BASE/adguardhome/webs/Module_adguardhome.asp" "$BASE/adguardhome/scripts/adguardhome_filters.sh"; then
+    fail "yHosts preset still present"
+fi
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "agh-check"
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "check_host"
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "adguardhome_filters.sh"

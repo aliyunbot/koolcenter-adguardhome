@@ -1,6 +1,6 @@
 #!/bin/sh
-# Fail-closed package install. Writes only under a safe INSTALL_ROOT/ROOT_DIR.
-# Live software-center invocation without that prefix exits 2 and writes nothing.
+# Fail-closed package install. Test installs require a safe INSTALL_ROOT/ROOT_DIR;
+# live installs require the real KoolCenter software-center environment.
 set -eu
 BASE=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 PACKAGE_SCRIPT_DIR=$BASE/scripts
@@ -39,7 +39,35 @@ place_file() {
 
 do_install() {
     ks="$PREFIX/koolshare"
-    usb="$PREFIX/entware/${MODULE}"
+    if live_router_environment; then
+        usb=
+        for entware_root in /tmp/mnt/sdb1/entware /opt/share/entware /entware; do
+            if [ -d "$entware_root" ] && [ -w "$entware_root" ]; then
+                usb="$entware_root/${MODULE}"
+                break
+            fi
+        done
+        [ -n "$usb" ] || fail "live Entware root not found or not writable"
+    else
+        usb="$PREFIX/entware/${MODULE}"
+    fi
+    dbus_bin=
+    for candidate in /koolshare/bin/dbus /usr/sbin/dbus /sbin/dbus /usr/bin/dbus; do
+        if [ -x "$candidate" ]; then
+            dbus_bin=$candidate
+            break
+        fi
+    done
+    if [ -z "$dbus_bin" ] && command -v dbus >/dev/null 2>&1; then
+        dbus_bin=$(command -v dbus)
+    fi
+    existing_enable=0
+    if [ -n "$dbus_bin" ] && live_router_environment; then
+        current_enable=$("$dbus_bin" get "${MODULE}_enable" 2>/dev/null || true)
+        case "$current_enable" in
+            1) existing_enable=1 ;;
+        esac
+    fi
     place_file "$BASE/webs/Module_${MODULE}.asp" "$ks/webs/Module_${MODULE}.asp"
     place_file "$BASE/webs/upstream_status.js" "$ks/webs/upstream_status.js"
     place_file "$BASE/scripts/lib_prefix.sh" "$ks/scripts/lib_prefix.sh"
@@ -66,7 +94,7 @@ do_install() {
     kv_set "softcenter_module_${MODULE}_install" "1"
     kv_set "softcenter_module_${MODULE}_name" "$MODULE"
     kv_set "softcenter_module_${MODULE}_title" "$MODULE_TITLE"
-    kv_set "${MODULE}_enable" "0"
+    kv_set "${MODULE}_enable" "$existing_enable"
     kv_set "${MODULE}_mode" "$MODE"
     kv_set "${MODULE}_listen" "${LISTEN_HOST}:${LISTEN_PORT}"
     seed_upstream_defaults
@@ -74,6 +102,14 @@ do_install() {
     kv_set "${MODULE}_dnsmasq_hook" "not_installed"
     kv_set "${MODULE}_binary_bundled" "0"
     write_upstream_ui
+    if [ -n "$dbus_bin" ] && live_router_environment; then
+        "$dbus_bin" set "${MODULE}_enable=${existing_enable}"
+        "$dbus_bin" set "${MODULE}_start_requested=1"
+        "$dbus_bin" set "softcenter_module_${MODULE}_install=1"
+        "$dbus_bin" set "softcenter_module_${MODULE}_name=${MODULE}"
+        "$dbus_bin" set "softcenter_module_${MODULE}_title=${MODULE_TITLE}"
+        "$dbus_bin" set "softcenter_module_${MODULE}_version=${MODULE_VERSION}"
+    fi
     say "result=ok"
     say "action=install"
     say "prefix=${PREFIX}"
@@ -86,6 +122,6 @@ if dry_run_enabled; then
     exit 0
 fi
 if ! resolve_prefix; then
-    fail "live install blocked; set DRY_RUN=1 or a non-system INSTALL_ROOT/ROOT_DIR"
+    fail "live install blocked; use a safe INSTALL_ROOT/ROOT_DIR or run inside KoolCenter"
 fi
 do_install

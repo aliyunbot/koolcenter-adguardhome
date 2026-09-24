@@ -1,6 +1,8 @@
-# KoolCenter package skeleton
+# KoolCenter package
 
-Phase 0 only. This package is a fail-closed adapter skeleton. It does not install onto a router, does not bind port 53, and does not bundle AdGuard Home.
+Phase 0 only. This package is a fail-closed adapter. A live install is accepted
+only from the native KoolCenter software-center environment with a writable
+Entware root. It does not bind port 53 and does not bundle AdGuard Home.
 
 ## What was confirmed
 
@@ -35,7 +37,11 @@ KoolCenter is the software-center product name used by the current installer mes
 
 1. Catalog metadata (`package/config.json.js`) describes the module to a software center. `md5` stays `unset` until a real archive is published.
 2. Payload (`package/adguardhome/`) is the offline-package root.
-3. Prefix library (`scripts/lib_prefix.sh`) is the only path policy. `INSTALL_ROOT` or `ROOT_DIR` is required for any write. `/`, `/koolshare`, `/jffs`, `/opt`, and other system roots are refused.
+3. Prefix library (`scripts/lib_prefix.sh`) is the only path policy. Test writes
+   require `INSTALL_ROOT` or `ROOT_DIR`; a live root prefix is accepted only
+   when `/koolshare/scripts/base.sh` or `ks_tar_install.sh` proves the native
+   software-center environment. `/`, `/koolshare`, `/jffs`, `/opt`, and other
+   system roots remain refused for ordinary host execution.
 4. Lifecycle (`scripts/adguardhome_config.sh`) implements start/stop/status. It never execs a binary.
 5. Hook slot (`scripts/dnsmasq_hook.sh`) exists so the fancyss/dnsmasq integration has a place. Phase 0 refuses to run it. It is copied under the prefixed Entware tree, not into init.d.
 6. Portable DNS-chain decisions stay in `src/agh_core.py`. This package does not fork that core.
@@ -52,7 +58,10 @@ From `package/`:
 - `./status`
 - `./uninstall`
 
-`DRY_RUN=1` prints the plan and writes nothing. `DRY_RUN=0` without a safe prefix exits 2. A safe prefix is an absolute path that is not a system root; `ROOT_DIR` is accepted as an alias of `INSTALL_ROOT`.
+`DRY_RUN=1` prints the plan and writes nothing. `DRY_RUN=0` without a safe
+prefix exits 2, unless the script is running inside the native KoolCenter
+software-center environment. A safe test prefix is an absolute path that is
+not a system root; `ROOT_DIR` is accepted as an alias of `INSTALL_ROOT`.
 
 Default bypass contract:
 
@@ -105,9 +114,10 @@ Commands, under a safe prefix:
 
 `./build.sh` does not call `softcenter/build_base.sh` and does not upload. `PACK=1` writes `package/dist/adguardhome.tar.gz` only.
 
-## Blockers
+## Limits and blockers
 
-- Live install is intentionally blocked. A software center run of `install.sh` with no prefix exits 2 so the center does not treat the module as installed.
+- Live install is guarded by native-environment markers and a writable
+  Entware-root check. Ordinary host execution with no prefix still exits 2.
 - `.valid` contains only `hnd`, matching the rogsoft reference plugins. mtk, ipq32, ipq64, and qca KoolCenter models need their own token and were not claimed.
 - Official AGH userspace ABI is not verified here. rogsoft README says hnd userspace is mostly 32-bit even on armv8 kernels. No binary was downloaded.
 - No fancyss-approved dnsmasq lifecycle API was verified in this pass. The hook script refuses rather than inventing a `server=` write.
@@ -134,9 +144,10 @@ Commands, under a safe prefix:
 
 ## 中文对照
 
-这是一个 Phase 0 的 fail-closed KoolCenter 软件中心适配器骨架：不绑定 53 端口，
-不执行真实路由器安装，不捆绑 AdGuard Home 二进制。`DRY_RUN=1` 只打印计划；真实写入
-必须使用安全的测试前缀，根目录和系统路径会被拒绝。
+这是一个 Phase 0 的 fail-closed KoolCenter 软件中心适配器：不绑定 53 端口，
+仅在检测到 KoolCenter 原生安装环境且存在可写 Entware 根目录时执行真实安装，
+不捆绑 AdGuard Home 二进制。`DRY_RUN=1` 只打印计划；普通主机真实写入必须使用
+安全测试前缀，根目录和系统路径会被拒绝。
 
 软件包层只负责传递配置和显示状态，可移植核心位于 `src/agh_core.py`。默认上游
 `127.0.0.1:7913` 是接口约定，不是任何部署已经存在的事实；只有只读探针确认后才可以

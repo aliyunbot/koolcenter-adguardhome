@@ -1,6 +1,7 @@
 #!/bin/sh
-# Prefix-safe helpers for the KoolCenter adapter skeleton.
-# Does not call nvram, dbus, skipd, or wget. Does not write outside INSTALL_ROOT.
+# Prefix-safe helpers for the KoolCenter adapter.
+# Test installs stay prefix-safe; live installs are accepted only inside the
+# KoolCenter software-center environment detected by live_router_environment.
 # Upstream UI values are dbus-style keys in the prefix kv file only.
 # core_integration=pending. This library never edits dnsmasq and never sets port53_touched=1.
 
@@ -205,6 +206,10 @@ prefix_is_safe() {
 resolve_prefix() {
     raw=${INSTALL_ROOT:-${ROOT_DIR:-}}
     if [ -z "$raw" ]; then
+        if live_router_environment; then
+            PREFIX=/
+            return 0
+        fi
         PREFIX=
         return 1
     fi
@@ -228,6 +233,13 @@ resolve_prefix() {
     return 0
 }
 
+live_router_environment() {
+    [ -d /koolshare ] || return 1
+    [ -f /koolshare/scripts/base.sh ] && return 0
+    [ -f /koolshare/scripts/ks_tar_install.sh ] && return 0
+    return 1
+}
+
 require_write_prefix() {
     if dry_run_enabled; then
         return 0
@@ -240,6 +252,11 @@ require_write_prefix() {
 
 under_prefix() {
     dest=$1
+    if [ "$PREFIX" = "/" ]; then
+        case "$dest" in
+            /*) return 0 ;;
+        esac
+    fi
     case "$dest" in
         "$PREFIX"/*) return 0 ;;
         *) return 1 ;;
@@ -247,6 +264,10 @@ under_prefix() {
 }
 
 kv_path() {
+    if [ "$PREFIX" = "/" ]; then
+        printf "/var/db/%s.kv\n" "$MODULE"
+        return 0
+    fi
     printf "%s/var/db/%s.kv\n" "$PREFIX" "$MODULE"
 }
 
