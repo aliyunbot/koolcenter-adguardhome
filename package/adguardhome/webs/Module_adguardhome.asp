@@ -35,8 +35,6 @@
 #agh-app .agh-filter-table button{cursor:pointer}
 #agh-app #agh-result,#agh-app #agh-check-result{box-sizing:border-box;min-height:22px;padding:7px;white-space:pre-wrap;word-break:break-word;border:1px solid rgba(127,127,127,.45);background:rgba(127,127,127,.08)}
 #agh-app .agh-section{margin-top:10px}
-#agh-app .agh-return{float:right;width:15px;height:25px;margin-top:10px}
-#agh-app .agh-return img{cursor:pointer;position:absolute;margin-left:-30px;margin-top:-25px}
 @media(max-width:720px){
   #agh-app .agh-row{align-items:stretch;flex-direction:column}
   #agh-app .agh-row .button_gen{width:100%}
@@ -64,8 +62,8 @@
                 <td colspan="3" valign="top">
                   <div>&nbsp;</div>
                   <div class="formfonttitle" style="float:left;">AdGuard Home</div>
-                  <div class="agh-return"><img id="return_btn" onclick="reload_Soft_Center();" title="返回软件中心" src="/images/backprev.png" onmouseover="this.src='/images/backprevclick.png'" onmouseout="this.src='/images/backprev.png'" alt="返回软件中心"></div>
-                  <div class="splitLine" style="clear:both;margin:30px 0 10px 5px;"></div>
+                  <div style="float:right;width:15px;height:25px;margin-top:-20px"><img id="return_btn" onclick="reload_Soft_Center();" align="right" style="cursor:pointer;position:absolute;margin-left:-30px;margin-top:-25px;" title="返回软件中心" src="/images/backprev.png" onmouseover="this.src='/images/backprevclick.png'" onmouseout="this.src='/images/backprev.png'" alt="返回软件中心"></div>
+                  <div style="margin:10px 0 0 5px;" class="splitLine"></div>
                   <div id="agh-app">
                     <div style="margin-left:5px;line-height:1.6;">AdGuard Home 过滤订阅管理</div>
                     <div class="agh-warn">本插件只让 AdGuard Home 监听 127.0.0.1:6053，SmartDNS upstream 为 127.0.0.1:7913；不会接管 53，也不会修改 dnsmasq。过滤订阅由 AdGuard Home 原生 API 管理。</div>
