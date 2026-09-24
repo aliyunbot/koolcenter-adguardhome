@@ -1,23 +1,75 @@
 # KoolCenter AdGuard Home Adapter
 
-An intentionally thin, fail-closed KoolCenter/fancyss adapter for inserting
-AdGuard Home into an existing proxy-aware DNS chain. It is not a Merlin
-installer port, a universal router installer, or a replacement for AdGuard
-Home. AdGuard Home must not bind port 53.
+A thin, fail-closed adapter for managing AdGuard Home on compatible
+KoolCenter/fancyss routers.
 
-**Status:** Phase 0 preview. The package is safe to test under a prefix and can
-be installed by KoolCenter when its native environment and writable Entware
-root are detected. It does not perform a live DNS cutover and does not bundle
-the AdGuard Home binary.
+## Requirements
+
+Before installation, confirm that:
+
+- The router has the native KoolCenter Software Center.
+- The router uses a currently claimed platform family. This release claims
+  the `hnd` platform token only; `mtk`, `ipq32`, `ipq64`, and `qca` are not
+  claimed.
+- A writable Entware root is available on persistent storage.
+- A verified AdGuard Home binary is already prepared at:
+  `entware/adguardhome/bin/AdGuardHome`.
+
+The AdGuard Home binary is not included in this package. It must match the
+release manifest, target architecture, and published SHA256 checksum.
+
+This Phase 0 preview is for manual/offline installation through the native
+KoolCenter Software Center. Online catalog installation is not supported.
+
+## Installation
+
+1. Back up the router configuration and Entware data.
+2. Prepare the official AdGuard Home binary for the router architecture.
+3. Verify its checksum and place it at
+   `entware/adguardhome/bin/AdGuardHome`.
+4. Download `adguardhome.tar.gz` from the GitHub release.
+5. Open KoolCenter Software Center and choose manual/offline installation.
+6. Upload `adguardhome.tar.gz` and start the installation.
+7. Open the AdGuard Home module page after installation.
+8. Confirm that the listener is `127.0.0.1:6053`, the default upstream is
+   `127.0.0.1:7913`, and the filter status loads successfully.
+9. Use `check_host` or a DNS query directed at port `6053` to verify a filter.
+
+## Features
+
+- KoolCenter package and lifecycle integration
+- Filter subscription management
+- Preset and custom subscriptions
+- Custom user rules
+- Native `check_host` verification
+- Read-only upstream and listener-owner verification
+- Fail-closed installation and validation
+
+## Scope
+
+- AdGuard Home listens on `127.0.0.1:6053`.
+- The adapter does not bind port `53`.
+- It does not install or run a dnsmasq hook.
+- It does not automatically redirect LAN DNS traffic to AdGuard Home.
+- Installing this package alone does not create a LAN-wide DNS cutover.
+- Existing proxy-aware DNS, ACL, firewall, and router DNS policy are not
+  modified.
+- This is not a universal router installer or an AdGuard Home replacement.
+
+## Uninstall
+
+Disable the module in KoolCenter Software Center before uninstalling it. The
+adapter removes its package files while preserving Entware runtime data unless
+an explicit data purge is requested.
 
 ## Documentation
 
 - [Product specification](SPEC.md)
+- [Chinese installation guide](docs/README.zh-CN.md)
 - [KoolCenter package contract](docs/KOOLCENTER_PACKAGE.md)
 - [fancyss lifecycle contract](docs/FANCYSS_LIFECYCLE.md)
 - [Binary packaging policy](docs/AGH_BINARY_PACKAGING.md)
-- [Read-only verification policy](docs/READONLY_VERIFICATION_POLICY.md)
-- [中文说明 / Chinese guide](docs/README.zh-CN.md)
+- [Release manifest](docs/AGH_RELEASE_MANIFEST.md)
 - [Branding and attribution](docs/BRANDING.md)
 
 The repository contains product code, generic documentation, and synthetic
@@ -26,13 +78,8 @@ single-device audit evidence are deliberately excluded.
 
 ## 中文简介
 
-这是一个用于将 AdGuard Home 接入现有代理感知 DNS 链路的精简、fail-closed
-KoolCenter/fancyss 适配器。它不是 Merlin 安装器，不是覆盖所有路由器的通用安装器，
-也不是 AdGuard Home 的替代品。AdGuard Home 不能监听 53 端口。
+这是一个面向兼容 KoolCenter/fancyss 路由器的精简、fail-closed AdGuard Home
+管理适配器。
 
-**当前状态：** Phase 0 预览版。软件包可在指定测试前缀下安全验证，也可由 KoolCenter
-在检测到原生环境和可写 Entware 根目录后安装；不执行真实 DNS 切换，也不捆绑
-AdGuard Home 二进制。
-
-项目只包含产品代码、通用文档和合成测试；路由器地址、主机名、备份、cookie、凭据及
-单设备审计证据均不会进入仓库。
+当前为 Phase 0 预览版，仅支持通过 KoolCenter 原生软件中心手动/离线安装。
+软件包不包含 AdGuard Home 二进制文件，也不接管 DNS 53 端口。
