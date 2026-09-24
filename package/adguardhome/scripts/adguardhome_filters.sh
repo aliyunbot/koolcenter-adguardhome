@@ -34,6 +34,14 @@ write_result() {
     mv "$TMP" "$OUT"
 }
 
+write_upstream_result() {
+    upstream_out=${AGH_UPSTREAM_RESULT:-/tmp/upload/adguardhome_upstream.json}
+    upstream_tmp=${upstream_out}.tmp.$$
+    mkdir -p "$(dirname "$upstream_out")"
+    printf '%s' "$1" > "$upstream_tmp"
+    mv "$upstream_tmp" "$upstream_out"
+}
+
 json_error() {
     message=$1
     if [ -x /koolshare/bin/jq ]; then
@@ -196,7 +204,7 @@ EOF
     fi
     display=$(upstream_verify_display "$verify_state" "$verify_source")
     pass_state=$(upstream_pass_state "$verify_state" "$verify_source")
-    write_result "$(printf '{\"mode\":\"%s\",\"host\":\"%s\",\"port\":\"%s\",\"effective_host\":\"%s\",\"effective_port\":\"%s\",\"verify_state\":\"%s\",\"verify_source\":\"%s\",\"manual_verified\":\"%s\",\"verify_display\":\"%s\",\"pass_state\":\"%s\",\"probe_state\":\"%s\",\"probe_source\":\"%s\",\"probe_owner\":\"%s\",\"probe_reason\":\"%s\",\"core_integration\":\"pending\",\"dbus_transport\":\"not_wired\",\"port53_touched\":\"0\",\"dnsmasq_hook\":\"not_installed\",\"router_mutation\":\"0\"}' \
+    write_upstream_result "$(printf '{\"mode\":\"%s\",\"host\":\"%s\",\"port\":\"%s\",\"effective_host\":\"%s\",\"effective_port\":\"%s\",\"verify_state\":\"%s\",\"verify_source\":\"%s\",\"manual_verified\":\"%s\",\"verify_display\":\"%s\",\"pass_state\":\"%s\",\"probe_state\":\"%s\",\"probe_source\":\"%s\",\"probe_owner\":\"%s\",\"probe_reason\":\"%s\",\"core_integration\":\"pending\",\"dbus_transport\":\"not_wired\",\"port53_touched\":\"0\",\"dnsmasq_hook\":\"not_installed\",\"router_mutation\":\"0\"}' \
         "$UPSTREAM_MODE_VALUE" "$UPSTREAM_HOST_VALUE" "$UPSTREAM_PORT_VALUE" \
         "$(upstream_effective_host "$UPSTREAM_MODE_VALUE" "$UPSTREAM_HOST_VALUE")" \
         "$(upstream_effective_port "$UPSTREAM_MODE_VALUE" "$UPSTREAM_PORT_VALUE")" \

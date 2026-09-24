@@ -157,9 +157,9 @@ function initAdGuardHome(){
       var badge=data.verify_display==="verified"?"verified":"not_verified";
       var lines=["upstream_mode="+data.mode,"upstream_host="+data.host,"upstream_port="+data.port,"upstream_effective="+data.effective_host+":"+data.effective_port,"upstream_verify_state="+data.verify_state,"upstream_verify_source="+data.verify_source,"upstream_manual_verified="+data.manual_verified,"upstream_verify_display="+data.verify_display,"upstream_pass_state="+data.pass_state,"upstream_probe_state="+data.probe_state,"upstream_probe_source="+data.probe_source,"upstream_probe_owner="+data.probe_owner,"upstream_probe_reason="+data.probe_reason,"core_integration="+data.core_integration,"dbus_transport="+data.dbus_transport,"port53_touched="+data.port53_touched,"dnsmasq_hook="+data.dnsmasq_hook,"router_mutation="+data.router_mutation];
       box.innerHTML="<p>验证展示：<strong class=\""+badge+"\">"+esc(data.verify_display)+"</strong>。unknown/candidate/pending/failed 不是 verified。</p><pre id=\"upstream-current\">"+esc(lines.join("\n"))+"</pre>";
-    });
+    },"/_temp/adguardhome_upstream.json");
   }
-  function request(action,args,cb){
+  function request(action,args,cb,resultPath){
     var id=Math.floor(Math.random()*90000000)+10000000;
     var xhr=new XMLHttpRequest();
     xhr.open("POST","/_api/",true);xhr.setRequestHeader("Content-Type","application/json");
@@ -168,7 +168,7 @@ function initAdGuardHome(){
       if(xhr.status!==200){setResult("API 请求失败 HTTP "+xhr.status,false);return;}
       var ack;try{ack=JSON.parse(xhr.responseText||"{}");}catch(e){setResult("API 返回不是 JSON",false);return;}
       if(String(ack.result)!==String(id)){setResult("API 未确认请求: "+(ack.error||"unknown"),false);return;}
-      var out=new XMLHttpRequest();out.open("GET","/_temp/adguardhome_filters.json?_="+new Date().getTime(),true);
+      var out=new XMLHttpRequest();out.open("GET",(resultPath||"/_temp/adguardhome_filters.json")+"?_="+new Date().getTime(),true);
       out.onreadystatechange=function(){if(out.readyState!==4)return;if(out.status!==200){setResult("读取操作结果失败",false);return;}var data;try{data=JSON.parse(out.responseText||"{}");}catch(e){setResult("操作结果不是 JSON",false);return;}if(data.ok===false){setResult(data.error||"操作失败",false);return;}cb(data);};out.send();
     };
     xhr.send(JSON.stringify({id:id,method:"adguardhome_filters.sh",params:[action].concat(args||[]),fields:{}}));
