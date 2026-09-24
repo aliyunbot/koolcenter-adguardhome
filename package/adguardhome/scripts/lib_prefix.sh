@@ -346,8 +346,21 @@ print_upstream_config() {
     load_upstream_fields
     eff_host=$(upstream_effective_host "$UPSTREAM_MODE_VALUE" "$UPSTREAM_HOST_VALUE")
     eff_port=$(upstream_effective_port "$UPSTREAM_MODE_VALUE" "$UPSTREAM_PORT_VALUE")
-    display=$(upstream_verify_display "$UPSTREAM_VERIFY_STATE_VALUE" "$UPSTREAM_VERIFY_SOURCE_VALUE")
-    pass_state=$(upstream_pass_state "$UPSTREAM_VERIFY_STATE_VALUE" "$UPSTREAM_VERIFY_SOURCE_VALUE")
+    probe_state=unknown
+    probe_source=none
+    probe_owner=unknown
+    probe_reason=probe_unavailable
+    print_upstream_probe_evidence >/dev/null
+    ui_verify_state=$UPSTREAM_VERIFY_STATE_VALUE
+    ui_verify_source=$UPSTREAM_VERIFY_SOURCE_VALUE
+    ui_manual_verified=$UPSTREAM_MANUAL_VERIFIED_VALUE
+    if [ "$UPSTREAM_MODE_VALUE" = "auto" ] && [ "$probe_state" = "verified" ] && [ "$probe_source" = "listener_owner" ] && [ "$probe_owner" = "smartdns" ]; then
+        ui_verify_state=verified
+        ui_verify_source=listener_owner
+        ui_manual_verified=0
+    fi
+    display=$(upstream_verify_display "$ui_verify_state" "$ui_verify_source")
+    pass_state=$(upstream_pass_state "$ui_verify_state" "$ui_verify_source")
     say "upstream_mode=${UPSTREAM_MODE_VALUE}"
     say "upstream_host=${UPSTREAM_HOST_VALUE}"
     say "upstream_port=${UPSTREAM_PORT_VALUE}"
@@ -467,8 +480,21 @@ write_upstream_ui() {
     load_upstream_fields
     eff_host=$(upstream_effective_host "$UPSTREAM_MODE_VALUE" "$UPSTREAM_HOST_VALUE")
     eff_port=$(upstream_effective_port "$UPSTREAM_MODE_VALUE" "$UPSTREAM_PORT_VALUE")
-    display=$(upstream_verify_display "$UPSTREAM_VERIFY_STATE_VALUE" "$UPSTREAM_VERIFY_SOURCE_VALUE")
-    pass_state=$(upstream_pass_state "$UPSTREAM_VERIFY_STATE_VALUE" "$UPSTREAM_VERIFY_SOURCE_VALUE")
+    probe_state=unknown
+    probe_source=none
+    probe_owner=unknown
+    probe_reason=probe_unavailable
+    print_upstream_probe_evidence >/dev/null
+    ui_verify_state=$UPSTREAM_VERIFY_STATE_VALUE
+    ui_verify_source=$UPSTREAM_VERIFY_SOURCE_VALUE
+    ui_manual_verified=$UPSTREAM_MANUAL_VERIFIED_VALUE
+    if [ "$UPSTREAM_MODE_VALUE" = "auto" ] && [ "$probe_state" = "verified" ] && [ "$probe_source" = "listener_owner" ] && [ "$probe_owner" = "smartdns" ]; then
+        ui_verify_state=verified
+        ui_verify_source=listener_owner
+        ui_manual_verified=0
+    fi
+    display=$(upstream_verify_display "$ui_verify_state" "$ui_verify_source")
+    pass_state=$(upstream_pass_state "$ui_verify_state" "$ui_verify_source")
     badge_class="not-verified"
     if [ "$display" = "verified" ]; then
         badge_class="verified"
@@ -482,11 +508,15 @@ write_upstream_ui() {
         printf "%s\n" "upstream_host=${UPSTREAM_HOST_VALUE}"
         printf "%s\n" "upstream_port=${UPSTREAM_PORT_VALUE}"
         printf "%s\n" "upstream_effective=${eff_host}:${eff_port}"
-        printf "%s\n" "upstream_verify_state=${UPSTREAM_VERIFY_STATE_VALUE}"
-        printf "%s\n" "upstream_verify_source=${UPSTREAM_VERIFY_SOURCE_VALUE}"
-        printf "%s\n" "upstream_manual_verified=${UPSTREAM_MANUAL_VERIFIED_VALUE}"
+        printf "%s\n" "upstream_verify_state=${ui_verify_state}"
+        printf "%s\n" "upstream_verify_source=${ui_verify_source}"
+        printf "%s\n" "upstream_manual_verified=${ui_manual_verified}"
         printf "%s\n" "upstream_verify_display=${display}"
         printf "%s\n" "upstream_pass_state=${pass_state}"
+        printf "%s\n" "upstream_probe_state=${probe_state}"
+        printf "%s\n" "upstream_probe_source=${probe_source}"
+        printf "%s\n" "upstream_probe_owner=${probe_owner}"
+        printf "%s\n" "upstream_probe_reason=${probe_reason}"
         printf "%s\n" "core_integration=pending"
         printf "%s\n" "dbus_transport=not_wired"
         printf "%s\n" "port53_touched=0"
@@ -523,9 +553,9 @@ write_upstream_ui() {
         printf "  port: \"%s\",\n" "$UPSTREAM_PORT_VALUE"
         printf "  effective_host: \"%s\",\n" "$eff_host"
         printf "  effective_port: \"%s\",\n" "$eff_port"
-        printf "  verify_state: \"%s\",\n" "$UPSTREAM_VERIFY_STATE_VALUE"
-        printf "  verify_source: \"%s\",\n" "$UPSTREAM_VERIFY_SOURCE_VALUE"
-        printf "  manual_verified: \"%s\",\n" "$UPSTREAM_MANUAL_VERIFIED_VALUE"
+        printf "  verify_state: \"%s\",\n" "$ui_verify_state"
+        printf "  verify_source: \"%s\",\n" "$ui_verify_source"
+        printf "  manual_verified: \"%s\",\n" "$ui_manual_verified"
         printf "  verify_display: \"%s\",\n" "$display"
         printf "  pass_state: \"%s\",\n" "$pass_state"
         printf "%s\n" "  core_integration: \"pending\","
