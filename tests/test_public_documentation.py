@@ -4,10 +4,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_SUFFIXES = {".md", ".json", ".js", ".py", ".sh", ".txt"}
 PRIVATE_MARKERS = (
-    "192.168." + "50.112",
-    "192.168." + "50.",
-    "100.67." + "181.110",
-    "rt-" + "be86u",
+    "192.0.2." + "1",  # TEST-NET-1 documentation address
+    "198.51.100." + "1",  # TEST-NET-2 documentation address
+    "100.64." + "0." + "1",  # RFC 6598 documentation address
+    "router-" + "example",
     "router_" + "backups/",
     "admin@",
 )
