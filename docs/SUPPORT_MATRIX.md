@@ -30,7 +30,7 @@ Model-family membership alone is insufficient. A router must also have:
 
 - the native KoolCenter Software Center and compatible 1.5 web API;
 - a writable persistent Entware root;
-- a userspace ABI compatible with the pinned `linux-armv7` AdGuard Home
+- a userspace ABI compatible with the pinned `linux-arm64` AdGuard Home
   artifact;
 - enough storage for the external binary and runtime data;
 - a verified upstream listener matching the package contract.
@@ -55,6 +55,6 @@ verification are fail-closed and are not supported installation states.
 - `p1axhnd.675x`：RT-AX68U、RT-AX86U
 
 这些是 KoolCenter/rogsoft 公开文档中的参考范围，不代表本适配器已经逐一验证所有
-机型。每台路由器仍必须满足原生软件中心、可写 Entware、兼容的 `linux-armv7`
+机型。每台路由器仍必须满足原生软件中心、可写 Entware、兼容的 `linux-arm64`
 用户态 ABI、足够存储和校验通过等条件。平台标记未知、ABI 冲突、存储不可写或校验
 失败时，安装必须 fail-closed。

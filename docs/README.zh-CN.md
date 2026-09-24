@@ -12,7 +12,7 @@
   `axhnd.675x`、`p1axhnd.675x`；旧版 `arm380`/`arm384`、`mtk`、`ipq32`、
   `ipq64`、`qca` 暂不声明支持；
 - 需要可写的持久化 Entware 根目录；
-- 需要用户提前准备官方 `v0.107.79`、`linux-armv7`、经过 SHA256 校验的
+- 需要用户提前准备官方 `v0.107.79`、`linux-arm64`、经过 SHA256 校验的
   AdGuard Home 二进制；
 - 软件包本身不捆绑 AdGuard Home 二进制；
 - 不执行局域网 DNS 自动切换；

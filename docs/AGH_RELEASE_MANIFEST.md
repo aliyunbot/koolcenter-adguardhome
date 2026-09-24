@@ -6,12 +6,12 @@ adapter. The executable is not redistributed in this repository.
 ```text
 version: v0.107.79
 release_url: https://github.com/AdguardTeam/AdGuardHome/releases/tag/v0.107.79
-asset: AdGuardHome_linux_armv7.tar.gz
-download_url: https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.79/AdGuardHome_linux_armv7.tar.gz
-archive_sha256: 7f8a4135ed427c5faafbc52d29845ea42acb38818bd7648626ddc07ee61a999e
+asset: AdGuardHome_linux_arm64.tar.gz
+download_url: https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.79/AdGuardHome_linux_arm64.tar.gz
+archive_sha256: 3f7893c18e8aaadc456d0452839190561c306ca95175a2254958be80a769c1ae
 inner_file: AdGuardHome/AdGuardHome
-inner_sha256: df4df847871d0851489c9c2933b7d81202972f84bc55c86c09d6daa914334691
-architecture: linux-armv7, ELF 32-bit ARM EABI5, statically linked
+inner_sha256: 64a9b6fc6269247f1973cddbf285aa6ce866d11bd29546b0f4135ba31d2283c8
+architecture: linux-arm64, ELF 64-bit ARM aarch64, statically linked
 license: GPL-3.0-only
 storage_contract: entware/adguardhome on writable persistent storage
 dns_listener: 127.0.0.1:6053
@@ -25,7 +25,7 @@ port53_bind: forbidden
 - Official checksum file: <https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.79/checksums.txt>
 - The archive SHA256 above matches the official checksum entry.
 - The inner SHA256 above was computed from the extracted `AdGuardHome` file.
-- The extracted file identifies as an ARM EABI5 32-bit statically linked ELF.
+- The extracted file identifies as an ARM aarch64 64-bit statically linked ELF.
 
 The platform token and the binary ABI are separate gates. This manifest does
 not claim that every router accepting the KoolCenter `hnd` token supports this
@@ -38,10 +38,10 @@ scope and remaining model-level limits.
 重新分发。
 
 - 官方版本：`v0.107.79`
-- 官方资源：`AdGuardHome_linux_armv7.tar.gz`
-- 归档 SHA256：`7f8a4135ed427c5faafbc52d29845ea42acb38818bd7648626ddc07ee61a999e`
-- 内部文件 SHA256：`df4df847871d0851489c9c2933b7d81202972f84bc55c86c09d6daa914334691`
-- 架构：`linux-armv7`，32 位 ARM EABI5，静态链接
+- 官方资源：`AdGuardHome_linux_arm64.tar.gz`
+- 归档 SHA256：`3f7893c18e8aaadc456d0452839190561c306ca95175a2254958be80a769c1ae`
+- 内部文件 SHA256：`64a9b6fc6269247f1973cddbf285aa6ce866d11bd29546b0f4135ba31d2283c8`
+- 架构：`linux-arm64`，64 位 ARM aarch64，静态链接
 - 许可证：GPL-3.0-only
 - 监听地址：`127.0.0.1:6053`
 - 默认上游：`127.0.0.1:7913`

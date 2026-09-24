@@ -12,7 +12,7 @@ Before installation, confirm that:
   scope is `hnd`/`axhnd`/`axhnd.675x`/`p1axhnd.675x`; legacy `arm380`/`arm384`,
   `mtk`, `ipq32`, `ipq64`, and `qca` are not claimed.
 - A writable Entware root is available on persistent storage.
-- A verified AdGuard Home `v0.107.79` `linux-armv7` binary is already prepared at:
+- A verified AdGuard Home `v0.107.79` `linux-arm64` binary is already prepared at:
   `entware/adguardhome/bin/AdGuardHome`.
 
 The AdGuard Home binary is not included in this package. It must match the

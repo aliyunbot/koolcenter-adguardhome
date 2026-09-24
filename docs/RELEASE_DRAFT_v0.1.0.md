@@ -12,7 +12,7 @@ Initial Phase 0 preview of the KoolCenter AdGuard Home adapter.
 - A claimed KoolCenter 1.5 platform family; see the
   [public support matrix](SUPPORT_MATRIX.md)
 - Writable persistent Entware storage
-- A verified external AdGuard Home `v0.107.79` `linux-armv7` binary at
+- A verified external AdGuard Home `v0.107.79` `linux-arm64` binary at
   `entware/adguardhome/bin/AdGuardHome`
 
 The binary is not included in this package. It must match the
@@ -52,7 +52,7 @@ KoolCenter AdGuard Home 适配器的首个 Phase 0 预览版。
 - 原生 KoolCenter 软件中心；
 - 当前公开支持范围见[支持矩阵](SUPPORT_MATRIX.md)；
 - 可写的持久化 Entware 存储；
-- 已校验的外部 AdGuard Home `v0.107.79` `linux-armv7` 二进制，路径为
+- 已校验的外部 AdGuard Home `v0.107.79` `linux-arm64` 二进制，路径为
   `entware/adguardhome/bin/AdGuardHome`。
 
 本软件包不包含 AdGuard Home 二进制。二进制必须匹配[发布清单](AGH_RELEASE_MANIFEST.md)、
