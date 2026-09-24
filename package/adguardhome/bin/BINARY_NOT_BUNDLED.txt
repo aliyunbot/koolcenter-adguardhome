@@ -1,0 +1,9 @@
+name: AdGuardHome
+bundled: no
+source: https://github.com/AdguardTeam/AdGuardHome/releases
+license: GPL-3.0-only
+license_file: https://github.com/AdguardTeam/AdGuardHome/blob/master/LICENSE.txt
+checksum: required-before-any-exec
+exec: blocked-by-skeleton
+expected_relative_path: entware/adguardhome/bin/AdGuardHome
+note: do not vendor, mirror, or rewrite the official binary

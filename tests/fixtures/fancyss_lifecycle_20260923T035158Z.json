@@ -1,0 +1,180 @@
+{
+  "schema": "fancyss_lifecycle_fixture_v1",
+  "backup_id": "20260923T035158Z",
+  "backup_dir": "router_backups/20260923T035158Z",
+  "host_label": "rt-be86u-6d30",
+  "router_write_performed": false,
+  "evidence": {
+    "api_ss_sha256": "4efe55694c9e108751d91953201d8602e4330bc982535c7d765869c80c4e378e",
+    "ss_log_sha256": "c48384f573569005767831571b6126461ae45e36e25490945857e4d688a90ec0",
+    "backup_string_counts": {
+      "7913": 0,
+      "6053": 0
+    },
+    "log_process_mentions": {
+      "smartdns": 11,
+      "chinadns": 0
+    },
+    "page_snapshots_have_dns_ui": false,
+    "public_source": {
+      "repo": "hq450/fancyss",
+      "ref": "3.0",
+      "commit": "b19e82cb6a05",
+      "commit_message": "update 3.5.30",
+      "commit_date": "2026-06-01T16:00:28Z",
+      "version_file": "3.5.30",
+      "ssconfig_sha256": "d043c8b56bdb8bb028c5e7f00e651f2c75c5b3bc4c08cec0fa3d12f1c9f1b20a",
+      "dnsmasq_postconf_sha256": "abf114654953062dcfebfb7898893d930c4ef15b9fb07a218e93cac840c7d263",
+      "rogsoft_owns_dns_split": false
+    }
+  },
+  "observed": {
+    "ss_basic_enable": "1",
+    "ss_basic_status": "1",
+    "ss_basic_mode": "2",
+    "ss_basic_mode_label": "大陆白名单模式",
+    "ss_basic_type": "0",
+    "ss_basic_dns_plan": "2",
+    "ss_basic_dns_plan_label": "smartdns",
+    "ss_basic_smrt": "2",
+    "ss_basic_smrt_label": "国外优先",
+    "ss_basic_dns_serverx": "0",
+    "ss_basic_dns_hijack": "1",
+    "ss_basic_proxy_ipv6": "0",
+    "ss_basic_chng": "3",
+    "ss_basic_chng_active": false,
+    "ss_basic_version_local": "3.5.30",
+    "pkg": {
+      "name": "fancyss",
+      "arch": "hnd_v8",
+      "type": "lite"
+    },
+    "legacy_unused_by_reviewed_start_path": [
+      "ss_dns_plan",
+      "ss_china_dns",
+      "ss_foreign_dns",
+      "ss_dns_china",
+      "ss_dns_foreign",
+      "ss_chinadns_user",
+      "ss_chinadns1_user",
+      "ss_chinadnsng_user",
+      "ss_dns2socks_user"
+    ],
+    "smartdns_chn_udp": [
+      "ISP_DNS_1",
+      "ISP_DNS_2",
+      "223.5.5.5",
+      "119.29.29.29",
+      "114.114.114.114",
+      "180.184.1.1",
+      "1.2.4.8",
+      "180.76.76.76"
+    ],
+    "smartdns_gfw": [
+      {
+        "proto": "dot",
+        "host": "one.one.one.one",
+        "host_ip": "1.1.1.1",
+        "port": 853
+      },
+      {
+        "proto": "dot",
+        "host": "dns.google",
+        "host_ip": "8.8.8.8",
+        "port": 853
+      },
+      {
+        "proto": "tcp",
+        "addr": "1.1.1.1",
+        "port": 53
+      },
+      {
+        "proto": "tcp",
+        "addr": "8.8.8.8",
+        "port": 53
+      }
+    ],
+    "gfw_udp_items": 0,
+    "acl": [
+      {
+        "ip": "192.168.50.101",
+        "mode": "2",
+        "label": "大陆白名单模式"
+      },
+      {
+        "ip": "192.168.50.11",
+        "mode": "5",
+        "label": "全局代理模式"
+      },
+      {
+        "ip": "192.168.50.12",
+        "mode": "5",
+        "label": "全局代理模式"
+      },
+      {
+        "ip": "192.168.50.13",
+        "mode": "0",
+        "label": "不通过代理"
+      },
+      {
+        "ip": "192.168.50.64",
+        "mode": "0",
+        "label": "不通过代理"
+      },
+      {
+        "ip": "192.168.50.112",
+        "mode": "0",
+        "label": "不通过代理"
+      },
+      {
+        "ip": "192.168.50.121",
+        "mode": "0",
+        "label": "不通过代理"
+      },
+      {
+        "ip": "192.168.50.160",
+        "mode": "0",
+        "label": "不通过代理"
+      },
+      {
+        "ip": "192.168.50.162",
+        "mode": "0",
+        "label": "不通过代理"
+      }
+    ],
+    "acl_default_mode": "follow",
+    "acl_default_resolves_to": "2"
+  },
+  "conclusions": {
+    "active_dns_plan": "smartdns",
+    "chinadns_ng_active": false,
+    "live_listener_7913": "UNKNOWN",
+    "live_listener_6053": "UNKNOWN",
+    "source_listen_port_when_serverx_0": "7913",
+    "source_listen_port_when_serverx_1": "53",
+    "installed_script_hash_matches_public_3_5_30": "UNKNOWN",
+    "dnsmasq_postconf_owner": "UNKNOWN",
+    "phase0_may_change_lan_dns": false,
+    "preserve_acl_112_mode": "0"
+  },
+  "rewrite_on_restart_expected_from_source": [
+    "/jffs/scripts/dnsmasq.postconf",
+    "/tmp/smartdns_fancyss.conf",
+    "/tmp/chnlist.txt",
+    "/tmp/gfwlist.txt",
+    "/koolshare/ss/xray.json",
+    "dnsmasq server= insertion via postconf when dns_serverx=0",
+    "iptables SHADOWSOCKS_DNS",
+    "cron ssupdate ssnodeupdate ss_reboot"
+  ],
+  "readonly_confirm_commands": [
+    "sha256sum /koolshare/ss/ssconfig.sh /koolshare/ss/rules/dnsmasq.postconf /koolshare/scripts/ss_base_dns.sh",
+    "cat /koolshare/ss/version",
+    "netstat -lntup",
+    "pidof smartdns; pidof chinadns-ng; pidof dnsmasq",
+    "ls -l /jffs/scripts/dnsmasq.postconf /jffs/scripts/dnsmasq-sdn.postconf /jffs/scripts/nat-start /jffs/scripts/wan-start /jffs/scripts/firewall-start /jffs/scripts/service-event /koolshare/init.d/S99shadowsocks.sh /koolshare/init.d/N99shadowsocks.sh",
+    "iptables -t nat -S",
+    "cru l",
+    "nvram get jffs2_scripts; nvram get dns_norebind"
+  ]
+}

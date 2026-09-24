@@ -1,0 +1,9 @@
+0.1.0
+- Bundle the software-center icon as a 256x256 AdGuard Home shield PNG.
+- Phase 0 package skeleton only.
+- Bypass mode: 127.0.0.1:6053 -> 127.0.0.1:7913.
+- Does not bind port 53, does not install a dnsmasq hook, does not bundle AdGuard Home.
+- Live router install is fail-closed.
+- Upstream mode defaults to auto. explicit host/port is stored as dbus-style keys only.
+- Local explicit ports 53 and 6053 are refused. Switching back to auto clears manual verified and returns to pending.
+- Package scripts do not modify dnsmasq or the router. core integration is pending.

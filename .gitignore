@@ -1,0 +1,10 @@
+.pytest_cache/
+__pycache__/
+*.py[cod]
+package/.upstream-probe-fixture/
+package/.upstream-proc-fixture/
+package/dist/*
+!package/dist/.gitkeep
+.self-check-root/
+.self-check-dist/
+.probe-*

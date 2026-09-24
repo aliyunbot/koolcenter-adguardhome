@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 93.5 93.5" role="img" aria-labelledby="title desc">
+  <title id="title">AdGuard Home shield</title>
+  <desc id="desc">Green shield with a white check mark.</desc>
+  <path fill="#68BC71" d="M45.6 0C31.4 0 14.2 3.4 0 10.7c0 15.9-.2 55.7 45.6 82.8 45.9-27.1 45.7-66.8 45.7-82.8C77.1 3.4 59.9 0 45.6 0Z"/>
+  <path fill="#67B279" d="M45.6 93.5C-.2 66.4 0 26.7 0 10.7 14.1 3.4 31.3 0 45.6 0v93.5Z"/>
+  <path fill="#FFFFFF" d="m44 62.4 27.6-37.2c-2-1.6-3.8-.5-4.8.4l-23 23.9-8.7-10.4C30.9 34.4 25.3 38 24 39l20 23.4Z"/>
+</svg>
