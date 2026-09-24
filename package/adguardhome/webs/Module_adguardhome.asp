@@ -151,6 +151,14 @@ function initAdGuardHome(){
   var result=document.getElementById("agh-result");
   function setResult(text,ok){result.textContent=text;result.className=ok?"agh-ok":"agh-error";}
   function esc(text){return String(text==null?"":text).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;");}
+  function loadUpstreamStatus(){
+    request("upstream",[],function(data){
+      var box=document.getElementById("agh-upstream-status");if(!box)return;
+      var badge=data.verify_display==="verified"?"verified":"not_verified";
+      var lines=["upstream_mode="+data.mode,"upstream_host="+data.host,"upstream_port="+data.port,"upstream_effective="+data.effective_host+":"+data.effective_port,"upstream_verify_state="+data.verify_state,"upstream_verify_source="+data.verify_source,"upstream_manual_verified="+data.manual_verified,"upstream_verify_display="+data.verify_display,"upstream_pass_state="+data.pass_state,"upstream_probe_state="+data.probe_state,"upstream_probe_source="+data.probe_source,"upstream_probe_owner="+data.probe_owner,"upstream_probe_reason="+data.probe_reason,"core_integration="+data.core_integration,"dbus_transport="+data.dbus_transport,"port53_touched="+data.port53_touched,"dnsmasq_hook="+data.dnsmasq_hook,"router_mutation="+data.router_mutation];
+      box.innerHTML="<p>验证展示：<strong class=\""+badge+"\">"+esc(data.verify_display)+"</strong>。unknown/candidate/pending/failed 不是 verified。</p><pre id=\"upstream-current\">"+esc(lines.join("\n"))+"</pre>";
+    });
+  }
   function request(action,args,cb){
     var id=Math.floor(Math.random()*90000000)+10000000;
     var xhr=new XMLHttpRequest();
@@ -194,6 +202,7 @@ function initAdGuardHome(){
   document.getElementById("agh-check").onclick=function(){var h=document.getElementById("agh-check-host").value.trim();request("check",[h],function(d){var rules=d.rules||[];document.getElementById("agh-check-result").textContent=rules.length?"命中: "+(d.reason||"blocked")+"\n"+rules.map(function(r){return "filter="+r.filter_list_id+" rule="+r.text;}).join("\n"):"未命中过滤规则。reason="+(d.reason||"NotFiltered");setResult("check_host 已完成",true);});};
   document.getElementById("agh-save-rules").onclick=function(){request("rules",[document.getElementById("agh-user-rules").value],function(d){renderStatus(d);setResult("自定义规则已保存",true);});};
   load();
+  loadUpstreamStatus();
 }
 </script>
 </body>

@@ -6,10 +6,15 @@ API_BASE=${AGH_API_BASE:-http://127.0.0.1:3000}
 OUT=${AGH_FILTER_RESULT:-/tmp/upload/adguardhome_filters.json}
 TMP=${OUT}.tmp.$$
 HAS_HTTP_RESPONSE=0
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 
 if [ -f /koolshare/scripts/base.sh ]; then
     . /koolshare/scripts/base.sh
     HAS_HTTP_RESPONSE=1
+fi
+
+if [ -f "$SCRIPT_DIR/lib_prefix.sh" ]; then
+    . "$SCRIPT_DIR/lib_prefix.sh"
 fi
 
 set -eu
@@ -162,6 +167,43 @@ check_host() {
     write_result "$response"
 }
 
+upstream_status() {
+    load_upstream_fields
+    probe_state=unknown
+    probe_source=none
+    probe_owner=unknown
+    probe_reason=probe_unavailable
+    probe_path=$SCRIPT_DIR/upstream-probe.sh
+    if [ -x "$probe_path" ] && probe_output=$("$probe_path" 2>/dev/null); then
+        while IFS= read -r probe_line; do
+            case "$probe_line" in
+                state=*) probe_state=${probe_line#state=} ;;
+                source=*) probe_source=${probe_line#source=} ;;
+                owner=*) probe_owner=${probe_line#owner=} ;;
+                reason=*) probe_reason=${probe_line#reason=} ;;
+            esac
+        done <<EOF
+$probe_output
+EOF
+    fi
+    verify_state=$UPSTREAM_VERIFY_STATE_VALUE
+    verify_source=$UPSTREAM_VERIFY_SOURCE_VALUE
+    manual_verified=$UPSTREAM_MANUAL_VERIFIED_VALUE
+    if [ "$UPSTREAM_MODE_VALUE" = "auto" ] && [ "$probe_state" = "verified" ] && [ "$probe_source" = "listener_owner" ] && [ "$probe_owner" = "smartdns" ]; then
+        verify_state=verified
+        verify_source=listener_owner
+        manual_verified=0
+    fi
+    display=$(upstream_verify_display "$verify_state" "$verify_source")
+    pass_state=$(upstream_pass_state "$verify_state" "$verify_source")
+    write_result "$(printf '{\"mode\":\"%s\",\"host\":\"%s\",\"port\":\"%s\",\"effective_host\":\"%s\",\"effective_port\":\"%s\",\"verify_state\":\"%s\",\"verify_source\":\"%s\",\"manual_verified\":\"%s\",\"verify_display\":\"%s\",\"pass_state\":\"%s\",\"probe_state\":\"%s\",\"probe_source\":\"%s\",\"probe_owner\":\"%s\",\"probe_reason\":\"%s\",\"core_integration\":\"pending\",\"dbus_transport\":\"not_wired\",\"port53_touched\":\"0\",\"dnsmasq_hook\":\"not_installed\",\"router_mutation\":\"0\"}' \
+        "$UPSTREAM_MODE_VALUE" "$UPSTREAM_HOST_VALUE" "$UPSTREAM_PORT_VALUE" \
+        "$(upstream_effective_host "$UPSTREAM_MODE_VALUE" "$UPSTREAM_HOST_VALUE")" \
+        "$(upstream_effective_port "$UPSTREAM_MODE_VALUE" "$UPSTREAM_PORT_VALUE")" \
+        "$verify_state" "$verify_source" "$manual_verified" "$display" "$pass_state" \
+        "$probe_state" "$probe_source" "$probe_owner" "$probe_reason")"
+}
+
 set_rules() {
     rules=$1
     body=$(/koolshare/bin/jq -cn --arg rules "$rules" '{rules:($rules | split("\n") | map(select(length > 0)))}')
@@ -200,5 +242,6 @@ case "$action" in
     config) set_config "${1:-}" "${2:-24}" ;;
     check) check_host "${1:-}" ;;
     rules) set_rules "${1:-}" ;;
+    upstream) upstream_status ;;
     *) json_error "unknown filter action" ;;
 esac

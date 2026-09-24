@@ -30,7 +30,7 @@ Hermetic tests may set `PROBE_FIXTURE_FILE` to an `ss`-style listener table; `PR
 
 ## Core Handoff
 
-The package output is evidence, not the core verification record. A future integration may pass only `state=verified` with `source=listener_owner` into the core's `DNSUpstreamContract`, preserving the observed endpoint and evidence source, and then rely on `src/agh_core.py` for its own contract validation. Non-verified states must remain non-verified. The current package does **not** automatically write `source=core` or claim core verification. The package UI continues to show verification as pending/not verified until an explicit core integration exists.
+The package output is read-only evidence. `state=verified` with `source=listener_owner` is sufficient for the package UI to display `verified`, because it records an exact `127.0.0.1:7913` listener owned by `smartdns`. The package does **not** write `source=core` or modify the core verification record. Non-verified states remain non-verified.
 
 ## 中文对照
 

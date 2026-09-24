@@ -83,14 +83,14 @@ dbus-style keys, stored in the prefix kv file until httpdb/dbus is wired (`dbus_
 - `adguardhome_upstream_host`: default `127.0.0.1`.
 - `adguardhome_upstream_port`: default `7913`.
 - `adguardhome_upstream_verify_state`: first run `unknown`. After a switch back to auto, `pending`.
-- `adguardhome_upstream_verify_source`: `none`, `manual`, or a future `core`. This package never writes `core`.
+- `adguardhome_upstream_verify_source`: `none`, `manual`, `listener_owner`, or `core`. The read-only listener probe may report `listener_owner`; the package never writes `core`.
 - `adguardhome_upstream_manual_verified`: `0` or `1`.
 
 Effective pass-through:
 
 - `auto` always passes `127.0.0.1:7913`, even if a previous explicit host/port is still stored.
 - `explicit` passes the stored host/port only as an unverified candidate. Display is `not_verified` for `unknown`, `candidate`, `pending`, `failed`, and manual claims.
-- Only `verify_state=verified` plus `verify_source=core` may display as `verified`. The package cannot produce that pair.
+- Only `verify_state=verified` plus `verify_source=listener_owner` or `core` may display as `verified`. The package UI obtains `listener_owner` from the exact read-only SmartDNS listener probe; it never treats configuration alone as verification.
 
 Loop constraint:
 

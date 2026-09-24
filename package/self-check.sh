@@ -3,7 +3,7 @@
 set -eu
 BASE=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 fail() { printf "%s\n" "self-check FAIL: $*" >&2; exit 1; }
-need() { grep -q "$2" "$1" || fail "$1 missing $2"; }
+need() { grep -Fq "$2" "$1" || fail "$1 missing $2"; }
 sh -n "$BASE/install" "$BASE/uninstall" "$BASE/start" "$BASE/stop" "$BASE/status" "$BASE/build.sh"
 sh -n "$BASE/adguardhome/install.sh" "$BASE/adguardhome/uninstall.sh"
 sh -n "$BASE/adguardhome/scripts/lib_prefix.sh" "$BASE/adguardhome/scripts/adguardhome_config.sh" "$BASE/adguardhome/scripts/adguardhome_runtime.sh" "$BASE/adguardhome/scripts/adguardhome_filters.sh" "$BASE/adguardhome/scripts/dnsmasq_hook.sh" "$BASE/adguardhome/init/S98adguardhome.sh" "$BASE/adguardhome/init/V98adguardhome.sh" "$BASE/adguardhome/init/T98adguardhome.sh"
@@ -84,6 +84,7 @@ rm -f "$probe"
     [ "$(upstream_verify_display pending none)" = "not_verified" ] || exit 1
     [ "$(upstream_verify_display failed none)" = "not_verified" ] || exit 1
     [ "$(upstream_verify_display verified manual)" = "not_verified" ] || exit 1
+    [ "$(upstream_verify_display verified listener_owner)" = "verified" ] || exit 1
     [ "$(upstream_verify_display verified core)" = "verified" ] || exit 1
     is_loopback_host 127.0.0.1 || exit 1
     is_loopback_host localhost || exit 1
@@ -160,6 +161,9 @@ need "$page" "agh-add-preset"
 need "$page" "adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt"
 need "$page" "agh-check"
 need "$page" "adguardhome_filters.sh"
+need "$page" "agh-upstream-status"
+need "$page" "loadUpstreamStatus"
+need "$page" 'request("upstream",[]'
 if INSTALL_ROOT="$root" DRY_RUN=0 "$cfg" upstream-apply explicit 127.0.0.1 53; then
     fail "explicit 127.0.0.1:53 should be refused"
 fi

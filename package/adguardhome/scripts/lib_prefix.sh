@@ -132,7 +132,7 @@ explicit_loop_risk() {
 upstream_verify_display() {
     state=$1
     source=$2
-    if [ "$state" = "verified" ] && [ "$source" = "core" ]; then
+    if [ "$state" = "verified" ] && { [ "$source" = "core" ] || [ "$source" = "listener_owner" ]; }; then
         printf "%s\n" "verified"
         return 0
     fi
@@ -475,6 +475,7 @@ write_upstream_ui() {
     fi
     mkdir -p "$(dirname "$frag")" "$(dirname "$js")"
     {
+        printf "%s\n" "<div id=\"agh-upstream-status\">"
         printf "%s\n" "<p>验证展示：<strong class=\"${badge_class}\" id=\"verify-badge\">${display}</strong>。unknown/candidate/pending/failed 不是 verified。</p>"
         printf "%s\n" "<pre id=\"upstream-current\">"
         printf "%s\n" "upstream_mode=${UPSTREAM_MODE_VALUE}"
@@ -492,6 +493,7 @@ write_upstream_ui() {
         printf "%s\n" "dnsmasq_hook=not_installed"
         printf "%s\n" "router_mutation=0"
         printf "%s\n" "</pre>"
+        printf "%s\n" "</div>"
     } > "$frag"
     tmp="${page}.tmp"
     found_end=0
