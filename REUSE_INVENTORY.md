@@ -32,6 +32,15 @@ automatic approval to copy third-party code.
   reimplement SmartDNS.
 - Owner: upstream SmartDNS project.
 
+### 217heidai AdBlock DNS Filters
+
+- Source: https://github.com/217heidai/adblockfilters
+- Use: the upstream `rules/adblockdns.txt` subscription as an optional
+  AdGuard Home preset; the rule body is fetched by AdGuard Home at runtime.
+- License observed: GPL-3.0.
+- Action: keep the source URL and attribution; do not vendor or rewrite the
+  generated rule body.
+
 ## Thin-adapter references
 
 ### Asuswrt-Merlin AdGuardHome Installer

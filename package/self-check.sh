@@ -21,12 +21,17 @@ grep -q "auto|explicit" "$BASE/adguardhome/scripts/lib_prefix.sh" || fail "mode 
 grep -q "53|6053" "$BASE/adguardhome/scripts/lib_prefix.sh" || fail "loop port constraint"
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "agh-add-preset"
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt"
+need "$BASE/adguardhome/webs/Module_adguardhome.asp" "217heidai/adblockfilters/main/rules/adblockdns.txt"
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "agh-check"
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "check_host"
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "adguardhome_filters.sh"
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "6053"
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "core_integration=pending"
 need "$BASE/adguardhome/webs/Module_adguardhome.asp" "port53_touched=0"
+catalog_fixture="$BASE/.catalog-fixture"
+AGH_FILTER_RESULT="$catalog_fixture" sh "$BASE/adguardhome/scripts/adguardhome_filters.sh" catalog
+grep -q "217heidai/adblockfilters/main/rules/adblockdns.txt" "$catalog_fixture" || fail "catalog missing 217heidai rule 1"
+rm -f "$catalog_fixture"
 for marker in 'id="TopBanner"' 'id="mainMenu"' 'id="subMenu"' 'id="tabMenu"' 'class="FormTitle"' 'show_menu(menu_hook)' 'Module_Softcenter.asp'; do
     need "$BASE/adguardhome/webs/Module_adguardhome.asp" "$marker"
 done

@@ -145,6 +145,7 @@ function initAdGuardHome(){
     {name:"AdGuard DNS filter",url:"https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt",note:"AdGuard curated aggregate"},
     {name:"AdGuard Chinese filter",url:"https://filters.adtidy.org/extension/ublock/filters/224.txt",note:"EasyList China + AdGuard Chinese filter"},
     {name:"HaGeZi Multi NORMAL",url:"https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/multi.txt",note:"Balanced all-round list"},
+    {name:"217heidai 规则1",url:"https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblockdns.txt",note:"AdGuard Home 合并 DNS 规则"},
     {name:"anti-AD",url:"https://anti-ad.net/easylist.txt",note:"anti-AD official AdGuard Home list"},
     {name:"yHosts / ChinaList",url:"https://raw.githubusercontent.com/VeleSila/yhosts/master/hosts.txt",note:"VeleSila yHosts hosts list; archived upstream"}
   ];

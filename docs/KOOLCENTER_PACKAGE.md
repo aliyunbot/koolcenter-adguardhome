@@ -118,6 +118,7 @@ Commands, under a safe prefix:
 - `config.json.js` `md5` is `unset`. Online install would reject that. Do not publish this skeleton as an installable archive.
 - Icon file `res/icon-adguardhome.png` is bundled as a 256x256 PNG shield crop. The source and upstream attribution are recorded in `docs/BRANDING.md`.
 - UI page shows the upstream contract, current prefix status block, and loop warning. It is not a working software-center control surface: no dbus/httpdb submit, no koolshare skin CSS, and no router mutation.
+- The preset catalog includes the upstream `217heidai` rule 1 subscription for AdGuard Home. The package stores only the URL and lets AdGuard Home fetch the rule; it does not copy or rewrite the upstream rule body.
 
 ## License
 
@@ -143,3 +144,7 @@ Commands, under a safe prefix:
 
 软件中心布局、生命周期脚本、存储路径、`.valid` 平台标记和构建行为均以当前文件为准；
 许可证、官方 AdGuard Home 复用边界和发布闸门见 `REUSE_INVENTORY.md` 以及 `docs/`。
+
+预设订阅中包含 `217heidai/adblockfilters` 的规则 1，地址为：
+`https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblockdns.txt`。
+软件包只保存上游地址，由 AdGuard Home 原生 API 获取，不复制或改写上游规则正文。
