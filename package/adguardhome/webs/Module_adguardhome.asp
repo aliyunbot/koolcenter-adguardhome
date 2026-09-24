@@ -159,17 +159,17 @@ function initAdGuardHome(){
       box.innerHTML="<p>验证展示：<strong class=\""+badge+"\">"+esc(data.verify_display)+"</strong>。unknown/candidate/pending/failed 不是 verified。</p><pre id=\"upstream-current\">"+esc(lines.join("\n"))+"</pre>";
     },"/_temp/adguardhome_upstream.json");
   }
-  function request(action,args,cb,resultPath){
+  function request(action,args,cb,resultPath,onError){
     var id=Math.floor(Math.random()*90000000)+10000000;
     var xhr=new XMLHttpRequest();
     xhr.open("POST","/_api/",true);xhr.setRequestHeader("Content-Type","application/json");
     xhr.onreadystatechange=function(){
       if(xhr.readyState!==4)return;
-      if(xhr.status!==200){setResult("API 请求失败 HTTP "+xhr.status,false);return;}
-      var ack;try{ack=JSON.parse(xhr.responseText||"{}");}catch(e){setResult("API 返回不是 JSON",false);return;}
-      if(String(ack.result)!==String(id)){setResult("API 未确认请求: "+(ack.error||"unknown"),false);return;}
+      if(xhr.status!==200){setResult("API 请求失败 HTTP "+xhr.status,false);if(onError)onError();return;}
+      var ack;try{ack=JSON.parse(xhr.responseText||"{}");}catch(e){setResult("API 返回不是 JSON",false);if(onError)onError();return;}
+      if(String(ack.result)!==String(id)){setResult("API 未确认请求: "+(ack.error||"unknown"),false);if(onError)onError();return;}
       var out=new XMLHttpRequest();out.open("GET",(resultPath||"/_temp/adguardhome_filters.json")+"?_="+new Date().getTime(),true);
-      out.onreadystatechange=function(){if(out.readyState!==4)return;if(out.status!==200){setResult("读取操作结果失败",false);return;}var data;try{data=JSON.parse(out.responseText||"{}");}catch(e){setResult("操作结果不是 JSON",false);return;}if(data.ok===false){setResult(data.error||"操作失败",false);return;}cb(data);};out.send();
+      out.onreadystatechange=function(){if(out.readyState!==4)return;if(out.status!==200){setResult("读取操作结果失败",false);if(onError)onError();return;}var data;try{data=JSON.parse(out.responseText||"{}");}catch(e){setResult("操作结果不是 JSON",false);if(onError)onError();return;}if(data.ok===false){setResult(data.error||"操作失败",false);if(onError)onError();return;}cb(data);};out.send();
     };
     xhr.send(JSON.stringify({id:id,method:"adguardhome_filters.sh",params:[action].concat(args||[]),fields:{}}));
   }
@@ -193,7 +193,7 @@ function initAdGuardHome(){
     document.getElementById("agh-state").textContent="运行中 / 过滤 API 已连接";
     if(data.user_rules){document.getElementById("agh-user-rules").value=data.user_rules.join("\n");}
   }
-  function load(){request("status",[],function(d){renderStatus(d);setResult("状态已读取",true);});}
+  function load(){request("status",[],function(d){renderStatus(d);setResult("状态已读取",true);loadUpstreamStatus();},undefined,function(){loadUpstreamStatus();});}
   preset.forEach(function(p,i){var o=document.createElement("option");o.value=String(i);o.textContent=p.name+" - "+p.note;document.getElementById("agh-preset").appendChild(o);});
   document.getElementById("agh-add-preset").onclick=function(){var p=preset[Number(document.getElementById("agh-preset").value)||0];request("add",[p.url,p.name],function(d){renderStatus(d);setResult("已订阅 "+p.name,true);});};
   document.getElementById("agh-add-custom").onclick=function(){var n=document.getElementById("agh-name").value.trim(),u=document.getElementById("agh-url").value.trim();request("add",[u,n],function(d){renderStatus(d);setResult("自定义订阅已添加",true);});};
@@ -202,7 +202,6 @@ function initAdGuardHome(){
   document.getElementById("agh-check").onclick=function(){var h=document.getElementById("agh-check-host").value.trim();request("check",[h],function(d){var rules=d.rules||[];document.getElementById("agh-check-result").textContent=rules.length?"命中: "+(d.reason||"blocked")+"\n"+rules.map(function(r){return "filter="+r.filter_list_id+" rule="+r.text;}).join("\n"):"未命中过滤规则。reason="+(d.reason||"NotFiltered");setResult("check_host 已完成",true);});};
   document.getElementById("agh-save-rules").onclick=function(){request("rules",[document.getElementById("agh-user-rules").value],function(d){renderStatus(d);setResult("自定义规则已保存",true);});};
   load();
-  loadUpstreamStatus();
 }
 </script>
 </body>
