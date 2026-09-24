@@ -1,6 +1,6 @@
 {
   "version": "0.1.0",
-  "md5": "unset",
+  "md5": "bf15e1f76dc8be41d4cced39e3d1525c",
   "home_url": "Module_adguardhome.asp",
   "title": "AdGuard Home",
   "description": "Phase 0 KoolCenter adapter. Manual/offline install; requires writable Entware and a verified external AdGuard Home v0.107.79 linux-arm64 binary. Listens on 127.0.0.1:6053 and never binds port 53.",
